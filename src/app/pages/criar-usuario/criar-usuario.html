@@ -1,0 +1,91 @@
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light"
+     style="background: url('https://www.toptal.com/designers/subtlepatterns/patterns/geometry2.png') repeat;">
+  <div class="card shadow-lg p-4" style="width: 24rem; background-color: #f8f9fa;">
+    <div class="text-center mb-3">
+      <img src="https://img.icons8.com/ios-filled/100/6c757d/add-user-male.png" alt="Logo" class="mb-2"/>
+    </div>
+    <h2 class="text-center text-secondary"><strong>Usuários Web</strong></h2>
+    <p class="text-center text-muted">Crie sua conta de usuário.</p>
+
+    <div class="text-center text-success mb-2">
+      <strong>{{ mensagemSucesso() }}</strong>
+    </div>
+
+    <div class="text-center text-danger mb-2">
+      <strong>{{ mensagemErro() }}</strong>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="mb-3">
+        <label for="nome" class="form-label text-secondary">Nome do usuário</label>
+        <input
+          type="text"
+          formControlName="nome"
+          class="form-control"
+          id="nome"
+          placeholder="Digite seu nome"
+          required
+        />
+        <div class="text-danger small mt-1" *ngIf="form.get('nome')?.touched && form.get('nome')?.invalid">
+          Por favor, informe o <strong>nome</strong> com pelo menos 8 caracteres.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label text-secondary">E-mail</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="form-control"
+          id="email"
+          placeholder="Digite seu e-mail"
+          required
+        />
+        <div class="text-danger small mt-1" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+          Por favor, informe um endereço de <strong>email</strong> válido.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label text-secondary">Senha</label>
+        <input
+          type="password"
+          formControlName="senha"
+          class="form-control"
+          id="password"
+          placeholder="Digite sua senha"
+          required
+        />
+        <div class="text-danger small mt-1" *ngIf="form.get('senha')?.touched && form.get('senha')?.invalid">
+          A senha deve ter letras maiúsculas, minúsculas, números, símbolos e pelo menos 8 caracteres.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="passwordConfirm" class="form-label text-secondary">Confirme a Senha</label>
+        <input
+          type="password"
+          formControlName="senhaConfirmacao"
+          class="form-control"
+          id="passwordConfirm"
+          placeholder="Confirme sua senha"
+          required
+        />
+        <div class="text-danger small mt-1" *ngIf="form.get('senhaConfirmacao')?.touched && form.get('senhaConfirmacao')?.invalid">
+          Por favor, confirme a <strong>senha</strong>.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-dark w-100 mt-3"
+        [disabled]="form.invalid">
+        Realizar Cadastro
+      </button>
+
+      <div class="text-center mt-3">
+        <a routerLink="/autenticar-usuario" class="text-decoration-none text-secondary">Já possui conta? Acesse aqui</a>
+      </div>
+
+    </form>
+  </div>
+</div>
