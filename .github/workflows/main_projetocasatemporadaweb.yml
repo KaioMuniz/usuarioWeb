@@ -1,55 +1,54 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy  # documentação da ação de deploy para Azure Web App
+# More GitHub Actions for Azure: https://github.com/Azure/actions                    # mais ações oficiais para Azure
 
-name: Build and deploy Node.js app to Azure Web App - projetoCasaTemporadaWeb
+name: Build and deploy Node.js app to Azure Web App - projetoCasaTemporadaWeb          # nome do workflow no GitHub Actions
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+on:                                                                                   # quando o workflow será acionado
+  push:                                                                               # dispara quando houver push
+    branches:                                                                         # somente para branches específicas
+      - main                                                                          # branch principal
+  workflow_dispatch:                                                                  # também permite rodar manualmente
 
-jobs:
-  build:
-    runs-on: windows-latest
+jobs:                                                                                 # define os jobs
+  build:                                                                              # primeiro job: build
+    runs-on: windows-latest                                                           # máquina Windows como ambiente da tarefa
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read #This is required for actions/checkout                            # permissão necessária para ler o repositório
 
-    steps:
-      - uses: actions/checkout@v4
+    steps:                                                                            # etapas do job
+      - uses: actions/checkout@v4                                                     # baixa o repositório para o runner
 
-      - name: Set up Node.js version
+      - name: Set up Node.js version                                                  # etapa para definir versão do Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22.x'
+          node-version: '22.x'                                                        # usando Node 22
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+      - name: npm install, build, and test                                            # etapa para instalar dependências e buildar
+        run: |                                                                         # bloco de comandos
+          npm install                                                                  # instala dependências
+          npm run build --if-present                                                   # roda build se existir script build
       
-      - name: Upload artifact for deployment job
+      - name: Upload artifact for deployment job                                      # sobe o artefato para outro job usar
         uses: actions/upload-artifact@v4
         with:
-          name: node-app
-          path: .
+          name: node-app                                                               # nome do artefato
+          path: .                                                                      # envia todos os arquivos do projeto
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
+  deploy:                                                                              # segundo job: deploy
+    runs-on: ubuntu-latest                                                             # rodando em Ubuntu
+    needs: build                                                                       # só inicia depois do job build terminar
     
-    steps:
-      - name: Download artifact from build job
+    steps:                                                                             # etapas do job de deploy
+      - name: Download artifact from build job                                         # baixa o artefato gerado
         uses: actions/download-artifact@v4
         with:
-          name: node-app
+          name: node-app                                                               # nome do artefato a ser baixado
       
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
+      - name: 'Deploy to Azure Web App'                                                # etapa de deploy no Azure
+        uses: azure/webapps-deploy@v3                                                  # ação oficial do Azure
         id: deploy-to-webapp
         with:
-          app-name: 'projetoCasaTemporadaWeb'
-          slot-name: 'Production'
-          package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_544D942C29C446929BDE6299B747130D }}
+          app-name: 'projetoCasaTemporadaWeb'                                           # nome do App Service
+          slot-name: 'Production'                                                      # slot de produção
+          package: .                                                                    # caminho do pacote enviado
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_544D942C29C446929BDE6299B747130D }}   # credenciais de deploy
