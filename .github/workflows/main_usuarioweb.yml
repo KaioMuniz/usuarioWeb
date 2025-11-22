@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - usuarioWeb
+name: Build and deploy Node.js app to Azure Web App - projetoCasaTemporadaWeb
 
 on:
   push:
@@ -28,8 +28,7 @@ jobs:
           npm install
           npm run build --if-present
       
-      # CORREÇÃO CRÍTICA 1: Aponta para a pasta 'browser'
-      # Isso evita o erro 403 Forbidden que você teve no começo
+      # Mantemos o caminho do build do Angular (baseado no seu ng build anterior)
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -49,13 +48,12 @@ jobs:
           name: node-app
           path: ./dist
       
-      # CORREÇÃO 2: Nome do App correto (usuarioWeb)
-      # CORREÇÃO 3: Usando o Secret longo que vimos na sua imagem
+      # CORREÇÃO: Atualizado para o nome que você confirmou: 'projetoCasaTemporadaWeb'
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'usuarioWeb'
+          app-name: 'projetoCasaTemporadaWeb'
           slot-name: 'Production'
           package: ./dist
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_544D942C29C446929BDE6299B747130D }}
